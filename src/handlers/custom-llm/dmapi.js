@@ -16,7 +16,15 @@ const getTranscriptsDomain = () => {
     : 'api.voiceflow.com'
 }
 
+function isValidUserId(user) {
+  // Accept only alphanumeric, underscore, hyphen; change as needed for stricter policy
+  return /^[a-zA-Z0-9_\-]+$/.test(user);
+}
+
 async function deleteUserState(user) {
+  if (!isValidUserId(user)) {
+    throw new Error('Invalid user id');
+  }
   const request = {
     method: 'DELETE',
     url: `https://${getVoiceflowDomain()}/state/user/${encodeURI(user)}`,
